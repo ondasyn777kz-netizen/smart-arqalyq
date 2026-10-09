@@ -59,7 +59,8 @@
 @media(max-width:1100px){.dashboard-header{gap:14px;padding:18px 22px!important}.dashboard-brand>span{display:none}.dashboard-nav button{font-size:10px;gap:5px}.dashboard-account{padding:9px}.account-avatar{display:none}.dashboard-account strong{max-width:100px}}
 @media(max-width:760px){.dashboard-header{grid-template-columns:1fr auto;padding:16px!important;gap:14px}.dashboard-brand>span{display:flex}.dashboard-nav{grid-column:1/-1;grid-row:2;gap:5px}.dashboard-nav button{flex-direction:column;gap:5px;font-size:10px;padding:9px 4px}.dashboard-slogan{padding:18px 16px 0}.dashboard-slogan h1{font-size:18px;line-height:1.45}main{padding:18px 16px 90px!important}.dashboard-grid,.activity-grid,.assistant-layout{grid-template-columns:1fr;gap:24px}.assistant-panel,.assistant-info{padding:18px}#real-map{height:57dvh;min-height:360px}.dashboard-module h1{font-size:23px!important}.dashboard-brand>a{gap:8px}.dashboard-brand{gap:8px}.dashboard-account{max-width:145px}#safe-sos{right:16px;bottom:20px}#guide-open{max-width:100%}.event-dialog{max-height:88dvh}.dashboard-module #quests>.flex>span{display:none}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-</style><style>.assistant-tabs{flex-wrap:wrap}.assistant-layout>*{min-width:0}.dashboard-module .rank-row{animation:none}.assistant-tabs .pill{white-space:normal}.dashboard-module input,.dashboard-module textarea{min-width:0;max-width:100%}</style></head>
+</style><style>.assistant-tabs{flex-wrap:wrap}.assistant-layout>*{min-width:0}.dashboard-module .rank-row{animation:none}.assistant-tabs .pill{white-space:normal}.dashboard-module input,.dashboard-module textarea{min-width:0;max-width:100%}</style><style>.insights-widget{padding:20px;border:1px solid #bcdad3;border-radius:22px;background:linear-gradient(135deg,#edf8f3,#edf3ff);margin-bottom:20px;box-shadow:0 8px 24px #2565560b}.insights-eyebrow{display:flex;justify-content:space-between;gap:10px;font-size:9px;font-weight:800;letter-spacing:.15em;color:#477866}.insights-eyebrow span{color:#286c52}.insights-widget h2{font-size:18px;font-weight:800;line-height:1.45;margin-top:12px}.insights-note{font-size:11px;color:#657f78;margin-top:8px}.insights-card{background:#ffffffc9;border:1px solid #d9e7e2;border-left:4px solid #61aa7e;border-radius:14px;padding:16px;margin-top:16px;min-height:175px;transition:opacity .25s}.insights-card[data-tone=safety]{border-left-color:#dea64a}.insights-card[data-tone=trend]{border-left-color:#6a91d6}.insights-card[aria-busy=true]{opacity:.4}#insights-category{font-size:12px;font-weight:800}#insights-text{font-size:14px;line-height:1.65;margin-top:10px;overflow-wrap:anywhere}#insights-basis{font-size:10px;line-height:1.5;color:#74847f;margin-top:12px}#insights-loading{font-size:11px;color:#466d62;margin-top:10px}#insights-loading[hidden]{display:none}.insights-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4a9b75;animation:insight-pulse .7s ease-in-out infinite alternate}.insights-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}.insights-controls>span{font-size:11px;color:#6c817c;margin-right:auto}.insights-controls button{border:1px solid #cadfd6;border-radius:10px;background:#fff9;padding:10px;font-size:11px;font-weight:700;min-height:44px}.insights-controls button:disabled{opacity:.5}@keyframes insight-pulse{to{opacity:.2;transform:scale(.65)}}@media(prefers-reduced-motion:reduce){.insights-dot{animation:none}.insights-card{transition:none}}@media(max-width:360px){.insights-widget{padding:14px}.insights-widget h2{font-size:16px}.insights-card{padding:12px}}
+</style></head>
 <body>
 <svg style="display:none" aria-hidden="true"><defs>
 <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/></symbol>
@@ -347,7 +348,7 @@ const events=[
 let state={done:[],joined:[],arCollected:[],robotCaptures:[],secretStep:0,points:0,registered:false,name:'Қала зерттеушісі'},filter='all',eventFilter='all',toastTimer;
 try{const saved=JSON.parse(localStorage.getItem('smart-arqalyq-public-v2'));if(saved){state.safeMode=saved.safeMode===true;state.matches=saved.matches;state.secretStep=Number.isInteger(saved.secretStep)?Math.max(0,Math.min(3,saved.secretStep)):0;state.done=Array.isArray(saved.done)?saved.done.filter(x=>quests.some(q=>q.id===x)):[];state.joined=Array.isArray(saved.joined)?saved.joined.filter(x=>events.some(e=>e.id===x)):[];state.arCollected=Array.isArray(saved.arCollected)?[...new Set(saved.arCollected.filter(id=>quests.some(q=>q.id===id)))]:[];state.robotCaptures=Array.isArray(saved.robotCaptures)?saved.robotCaptures.filter((r,i,all)=>r&&quests.some(q=>q.id===r.questId)&&typeof r.capturedAt==='string'&&Number.isFinite(Date.parse(r.capturedAt))&&all.findIndex(x=>x&&x.questId===r.questId)===i).map(r=>({questId:r.questId,capturedAt:r.capturedAt})):[];state.arCollected=[...new Set([...state.arCollected,...state.robotCaptures.map(r=>r.questId)])];state.done=[...new Set(state.done)];state.points=Number.isFinite(saved.points)&&saved.points>=0?saved.points:0+quests.filter(q=>state.done.includes(q.id)).reduce((sum,q)=>sum+q.xp,0);state.joined=[...new Set(state.joined)];if(typeof saved.name==='string'&&saved.name.trim()){state.name=saved.name.trim().slice(0,50);state.registered=saved.registered===true;}}}catch(e){}
 
-function save(){try{localStorage.setItem('smart-arqalyq-public-v2',JSON.stringify(state));return true;}catch(e){notify('Браузерде сақтау қолжетімсіз. Прогресс осы сессияда сақталады.');return false;}}
+function save(){window.dispatchEvent(new Event('torgai-state-changed'));try{localStorage.setItem('smart-arqalyq-public-v2',JSON.stringify(state));return true;}catch(e){notify('Браузерде сақтау қолжетімсіз. Прогресс осы сессияда сақталады.');return false;}}
 function notify(message){document.querySelector('#toast').textContent=message;clearTimeout(toastTimer);toastTimer=setTimeout(()=>document.querySelector('#toast').textContent='',6000);}
 function render(){updateDashboardAccount();document.querySelector('#profile-name').textContent='Сәлем, '+state.name+'!';document.querySelector('#name-input').value=state.name;const xp=state.points;document.querySelectorAll('.xp').forEach(el=>el.textContent=xp);document.querySelectorAll('.xpbar').forEach(el=>el.style.width=Math.min(xp/500*100,100)+'%');document.querySelector('#done-count').textContent=state.done.length;document.querySelector('#joined-count').textContent=state.joined.length;document.querySelector('#badge').textContent=state.done.length?'Ашылды! Қалаға қосқан алғашқы үлесің.':'Алғашқы квестті орындап, белгі ал.';
 const visible=quests.filter(q=>filter==='all'||q.id===filter);document.querySelector('#quest-count').textContent=visible.length+' квест';document.querySelector('#quest-list').innerHTML=visible.map(q=>{const done=state.done.includes(q.id);return `<article class="card p-4"><div class="flex gap-3"><span class="quest-icon" style="background:${q.bg}">${q.icon}</span><div><p class="text-[9px] font-bold uppercase tracking-widest muted mb-1">${q.category} · ${q.time}</p><h3 class="text-sm font-bold">${q.title}</h3><p class="text-xs muted leading-5 mt-1">${q.description}</p><p class="text-[11px] muted mt-2">⌖ ${q.place}${done?' · ✓ Орындалды':''}</p></div></div><div class="flex justify-between items-center mt-4 pt-3 border-t border-[#eff1ea]"><span class="text-xs font-bold">✦ +${q.xp} XP</span><button class="action" data-gps="${q.id}" aria-haspopup="dialog" ${gpsPending?'disabled':''}>${gpsPending===q.id?'GPS анықталуда…':'Мен осындамын'}</button></div><button class="action w-full mt-3" data-ar="${q.id}" aria-haspopup="dialog">${hasCapturedRobot(q.id)?'🤖 Коллекциядағы роботты көру':'📷 AR-камераны ашу'}</button></article>`}).join('');
@@ -777,6 +778,55 @@ function applyMapFilter(){
 }
 function selectMapFilter(id){dashboardMapFilter=id;document.querySelectorAll('[data-map-filter]').forEach(b=>{b.classList.toggle('active',b.dataset.mapFilter===id);b.setAttribute('aria-pressed',String(b.dataset.mapFilter===id));});applyMapFilter();}
 document.querySelector('#map-filters').onclick=e=>{const b=e.target.closest('[data-map-filter]');if(b){cityMap?.closePopup();selectMapFilter(b.dataset.mapFilter);}};
+
+// Rule-based local insights; no citywide analytics or remote neural model.
+const insightsWidget=document.createElement('section');insightsWidget.className='insights-widget';insightsWidget.setAttribute('aria-labelledby','insights-title');
+insightsWidget.innerHTML='<div class="insights-eyebrow">SMART INSIGHTS <span>✦ LIVE</span></div><h2 id="insights-title">🤖 TorgAI Аналитик: Сіздің әрекеттеріңіз бен қала кеңестері</h2><p class="insights-note">Демо аналитика · осы браузердегі әрекеттерге негізделген.</p><div id="insights-card" class="insights-card" aria-busy="false"><p id="insights-category"></p><p id="insights-text"></p><p id="insights-basis"></p></div><p id="insights-loading" role="status" hidden><span class="insights-dot"></span> Нейрожелі деректерді талдауда… <small>(имитация)</small></p><div class="insights-controls"><span id="insights-position">1 / 3</span><button id="insights-pause" type="button" aria-pressed="false">⏸ Авто</button><button id="insights-next" type="button">Келесі кеңес →</button></div>';
+document.querySelector('#profile > h1').after(insightsWidget);
+let insightIndex=0,insightTimer=null,insightTransition=null,insightPaused=false;
+function getInsightCards(){
+ const completed=state.done.length,robots=state.robotCaptures.length;
+ const cleanup=events.find(e=>e.id==='taza');
+ const upcoming=cleanup&&Date.parse(cleanup.iso)>Date.now();
+ const personal=!completed?'Алғашқы қадамыңыздан бастаңыз: «Қалалық квесттер» бөлімінен тапсырма таңдап, орынға келгенде GPS арқылы растаңыз.':
+  upcoming&&!state.joined.includes('taza')?'Сіз '+completed+' квест орындадыңыз. «Таза Қазақстан» акциясына тіркеліп, қаланың тазалығына үлес қоса аласыз.':
+  robots===0?'Сіз '+completed+' квест орындадыңыз. Енді AR роботын ұстап, коллекцияңызды бастаңыз — бір квест үшін +50 XP беріледі.':
+  'Сіз '+completed+' квест орындап, '+robots+' робот жинадыңыз. Қазір '+state.points+' XP бар. '+(state.secretStep<3?'Картадағы «Қаланың құпия коды» демосын ашып көріңіз.':'«Арқалық зерттеушісі» белгісі ашылған! Match-та ортақ қызығушылықтағы жиынды таңдаңыз.');
+ const mine=(state.matches||[]).filter(m=>m.mine&&Date.parse(m.when)>Date.now());
+ const late=mine.some(m=>isArqalykNight(new Date(m.when)));
+ const safety=late?'Сіз құрған жиындардың арасында кешкі не түнгі уақытқа белгіленгені бар. Орынның ашықтығы мен жарығын алдын ала нақтылап, күндізгі уақытты қарастырыңыз.':
+  isArqalykNight()?'Арқалықта қазір түнгі уақыт. Квестті күндіз орындауды қарастырыңыз. Жарықтандыруы белгісіз жерге бармаңыз; қажет болса SOS батырмасын пайдаланыңыз.':
+  state.safeMode?'Қауіпсіз бағыт режимі қосулы. Картадағы жасыл сызық пен қызыл аймақ — демо үлгілер; олар нақты қауіпсіздікті растамайды.':
+  'Жиынға барар алдында орын мен уақытты нақтылаңыз. Кешкі уақытта жарықтандыруы белгісіз аумаққа жиын жоспарламаңыз.';
+ const active=(state.matches||[]).filter(m=>Date.parse(m.when)>Date.now());
+ const own=active.filter(m=>m.mine||m.joined),sample=own.length?own:active;
+ const counts={};sample.forEach(m=>{counts[m.category]=(counts[m.category]||0)+1;});
+ const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+ const leaders=sorted.length?sorted.filter(([,count])=>count===sorted[0][1]).map(([name])=>name):[];
+ const trend=sample.length?(own.length?'Сіздің белсенді Match әрекеттеріңіз: ':'Жергілікті демо лентада ')+sample.length+' жиын. '+(leaders.length>1?'Бірнеше санат тең: '+leaders.join(', ')+'.':'Ең жиі санат — «'+leaders[0]+'» ('+sorted[0][1]+' жиын).'):'Белсенді жиын әзірше жоқ. TorgAI Match-та жаңа ұсыныс құрып, алғашқы қатысушыларды шақыру идеясын дайындаңыз.';
+ return [
+ {category:'💡 Жеке кеңес',text:personal,basis:'Барлық уақыт: '+completed+' квест · '+state.points+' XP · '+state.joined.length+' тіркелу',tone:'personal'},
+ {category:'⚠️ Қауіпсіздік ескертпесі',text:safety,basis:'Арқалық уақыты · түнгі аралық 20:00–08:00 · расталған қауіп картасы қосылмаған',tone:'safety'},
+ {category:'📊 Қалалық тренд',text:trend,basis:own.length?'Тек осы браузердегі сіздің жиындарыңыз бен қатысу белгілеріңіз.':'Демо үлгі. Бұл Арқалық тұрғындарының нақты статистикасы емес.',tone:'trend'}
+ ];
+}
+function renderInsight(){const item=getInsightCards()[insightIndex];document.querySelector('#insights-category').textContent=item.category;document.querySelector('#insights-text').textContent=item.text;document.querySelector('#insights-basis').textContent=item.basis;document.querySelector('#insights-card').dataset.tone=item.tone;document.querySelector('#insights-position').textContent=(insightIndex+1)+' / 3';}
+function stopInsightTransition(){clearTimeout(insightTransition);insightTransition=null;document.querySelector('#insights-loading').hidden=true;document.querySelector('#insights-card').setAttribute('aria-busy','false');document.querySelector('#insights-next').disabled=false;}
+function refreshInsight(advance=false){
+ stopInsightTransition();if(advance)insightIndex=(insightIndex+1)%3;
+ if(!profileDialog.open||document.hidden){renderInsight();return;}
+ document.querySelector('#insights-loading').hidden=false;document.querySelector('#insights-card').setAttribute('aria-busy','true');document.querySelector('#insights-next').disabled=true;
+ insightTransition=setTimeout(()=>{renderInsight();stopInsightTransition();},window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:550);
+}
+function scheduleInsights(){clearInterval(insightTimer);insightTimer=null;if(!profileDialog.open||document.hidden){stopInsightTransition();return;}renderInsight();if(!insightPaused)insightTimer=setInterval(()=>{if(!insightsWidget.contains(document.activeElement))refreshInsight(true);},5000);}
+document.querySelector('#insights-next').onclick=()=>refreshInsight(true);
+document.querySelector('#insights-pause').onclick=()=>{insightPaused=!insightPaused;document.querySelector('#insights-pause').setAttribute('aria-pressed',String(insightPaused));document.querySelector('#insights-pause').textContent=insightPaused?'▶ Авто':'⏸ Авто';scheduleInsights();};
+new MutationObserver(scheduleInsights).observe(profileDialog,{attributes:true,attributeFilter:['open']});
+document.addEventListener('visibilitychange',scheduleInsights);
+window.addEventListener('pagehide',()=>{clearInterval(insightTimer);stopInsightTransition();});
+window.addEventListener('pageshow',scheduleInsights);
+window.addEventListener('torgai-state-changed',()=>refreshInsight());
+renderInsight();
 
 window.addEventListener('hashchange' ,()=>switchTab(location.hash.slice(1)));render();switchTab(location.hash.slice(1));
 if(!state.registered){document.querySelector('#welcome-name').value=state.name==='Қала зерттеушісі'?'':state.name;welcomeDialog.showModal();}
